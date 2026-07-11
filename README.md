@@ -1,4 +1,4 @@
-# Ruste Ascii-Particules
+# Rust Fun Apps
 
 Este proyecto contiene dos aplicaciones divertidas, interactivas y altamente eficientes construidas en **Rust**:
 
@@ -66,6 +66,44 @@ Convierte cualquier imagen (PNG, JPG, WEBP, etc.) en arte ASCII de colores direc
   ```bash
   cargo run --release --bin ascii -- --help
   ```
+
+- **Animar la imagen con rotación de 360° (modo movimiento):**
+  ```bash
+  cargo run --release --bin ascii -- "ruta/a/tu/imagen.png" --rotate
+  ```
+  La imagen rota en el mismo lugar de la terminal en un loop continuo hasta que presiones
+  `Ctrl+C`. Se puede ajustar la suavidad y velocidad de la animación:
+  ```bash
+  cargo run --release --bin ascii -- "ruta/a/tu/imagen.png" --rotate --frames 36 --frame-delay 80
+  ```
+  - `--frames`: cantidad de pasos para completar una vuelta de 360° (por defecto 60, más
+    pasos = rotación más suave).
+  - `--frame-delay`: milisegundos entre cada frame (por defecto 50ms).
+
+  *Nota: esta es una primera versión sencilla. En imágenes no cuadradas, las esquinas
+  pueden recortarse levemente en ángulos que no son múltiplos de 90°, y la animación no
+  reacciona si cambias el tamaño de la terminal mientras corre.*
+
+- **Reproducir una secuencia de imágenes en orden (modo GIF-como-ASCII):**
+  ```bash
+  cargo run --release --bin ascii -- --six
+  ```
+  Carga todas las imágenes de la carpeta `assets/six` (ordenadas por nombre de archivo,
+  por eso usan un numerado con ceros a la izquierda como `frame-001.jpg`), las precalcula
+  como ASCII y las reproduce en orden en el mismo lugar de la terminal, en loop continuo
+  como un GIF hasta que presiones `Ctrl+C`. También acepta una carpeta distinta:
+  ```bash
+  cargo run --release --bin ascii -- --six "ruta/a/otra/carpeta"
+  ```
+  Reutiliza `--width`/`--height`/`--mono`/`--invert` igual que los demás modos. El delay
+  entre frames por defecto es de **1500ms (1.5s)** para este modo (a diferencia de
+  `--rotate`, que usa 50ms por defecto); se puede ajustar con `--frame-delay`:
+  ```bash
+  cargo run --release --bin ascii -- --six --frame-delay 500
+  ```
+  *Recomendado ejecutar el binario compilado en modo `--release` (o
+  `target/release/ascii.exe` directo): decodificar muchas imágenes en modo debug es
+  notablemente más lento.*
 
 ---
 
